@@ -1,4 +1,5 @@
 import axios from 'axios';
+import cookies from 'react-cookies';
 
 export default function apiRequest(url, method = 'GET', data, headers) {
   // url - http://naver.com https://naver.com
@@ -22,6 +23,12 @@ export default function apiRequest(url, method = 'GET', data, headers) {
 
   if (['POST', 'PUT', 'PATCH'].includes(method.toUpperCase()) && data) {
     options.data = data;
+  }
+
+  const token = cookies.load('token');
+  if (token && token.trim()) {
+    headers = headers ?? {}; // headers 없을 때는 비어있는 객체로 기본값 설정
+    headers.Authorization = `Bearer ${token}`;
   }
 
   if (headers) options.headers = headers; // headers는 옵션쪽에 있을 때만 추가

@@ -30,7 +30,7 @@ const KakaoMap = ({width, height, center, zoom, marker, markerImage}) => {
       if (!Array.isArray(marker)) _markers = [marker];
 
       const markers = _markers.map(m => {
-        const {lat, lng, image} = m;
+        const {lat, lng, image, info} = m;
         const options = {
             position: new kakao.maps.LatLng(lat, lng),
           };
@@ -47,6 +47,37 @@ const KakaoMap = ({width, height, center, zoom, marker, markerImage}) => {
         // 마커 이미지 처리 D
 
         const _marker = new kakao.maps.Marker(options);
+
+        // 윈포 윈도우 처리 B 
+        if (info?.content?.trim()) {
+          const { content, clickable, removable } = info;
+          
+          const infoWindow = new kakao.maps.InfoWindow({
+            content,
+            removable: Boolean(removable),
+          });
+          
+          if (clickable) {
+            kakao.maps.event.addListener(_marker, 'click', function() {
+              if (_marker.isInfoWindowOpen) {
+                // 미노출
+                infoWindow.close();
+
+                _marker.isInfoWindowOpen = false;
+                
+              } else {
+                // 노출
+                infoWindow.open(map, _marker);
+                _marker.isInfoWindowOpen = true;
+              }
+            });
+          } else {
+            infoWindow.open(map, _marker);
+          }
+
+        }
+
+        // 윈포 윈도우 처리 D
         
         _marker.setMap(map);
 

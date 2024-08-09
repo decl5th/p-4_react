@@ -15,6 +15,7 @@ const KakaoMap = ({
     marker, 
     markerImage, 
     currentLocation, // 위치 기반
+    address, // 주소 기반
   }) => {
     const [ _center, setCenter] = useState(center);  // 센터가 바뀔 때 다시 로딩
   const mapRef = useRef(null);
@@ -29,6 +30,20 @@ const KakaoMap = ({
 }
 }, [currentLocation]);
 // 현재 위치 기반 E
+
+// 주소로 지도 가운데 배치 B
+ useEffect(() => {
+  if (!address?.trim()) return;
+
+  const geocoder = new kakao.maps.services.Geocoder();
+
+  geocoder.addressSearch(address, (items, status) => {
+    if (status === kakao.maps.services.Status.OK) {
+      setCenter({lat: items[0].y, lng: items[0].x });
+    }
+  });
+ }, [address]);
+// 주소로 지도 가운데 배치 D
 
 
   useEffect(() => {

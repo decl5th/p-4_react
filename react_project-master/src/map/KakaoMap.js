@@ -34,7 +34,6 @@ const KakaoMap = ({width, height, center, zoom, marker, markerImage}) => {
         const options = {
             position: new kakao.maps.LatLng(lat, lng),
           };
-        const _marker = new kakao.maps.Marker(options);
         
         // 마커 이미지 처리 B
           const mi = image ? image : markerImage;
@@ -46,6 +45,8 @@ const KakaoMap = ({width, height, center, zoom, marker, markerImage}) => {
             options.image = mIcon
           }
         // 마커 이미지 처리 D
+
+        const _marker = new kakao.maps.Marker(options);
         
         _marker.setMap(map);
 

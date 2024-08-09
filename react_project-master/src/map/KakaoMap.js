@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const MapArea = styled.div`
@@ -7,16 +7,39 @@ const MapArea = styled.div`
   height: ${({height}) => height ?? '38.5rem'};
 `;
 
-const KakaoMap = ({width, height, center, zoom, marker, markerImage}) => {
+const KakaoMap = ({
+    width, 
+    height, 
+    center, 
+    zoom, 
+    marker, 
+    markerImage, 
+    currentLocation, // 위치 기반
+  }) => {
+    const [ _center, setCenter] = useState(center);  // 센터가 바뀔 때 다시 로딩
   const mapRef = useRef(null);
 
+ // 현재 위치 기반 B
+ useEffect(()=> {
+ if (currentLocation) {
+  navigator.geolocation.getCurrentPosition(pos => {
+    const {latitude, longitude} = pos.coords;
+    setCenter({lat: latitude, lng: longitude});
+  });
+}
+}, [currentLocation]);
+// 현재 위치 기반 E
+
+
   useEffect(() => {
-    const mapEl = mapRef.current;
+    const mapEl = mapRef.current; 
+
+   
     
     // 지도 가운데 배치 B
     const position = new kakao.maps.LatLng(
-      center?.lat ?? 37.557756188912954,
-      center?.lng ?? 126.94062742683245,
+      _center?.lat ?? 37.557756188912954,
+      _center?.lng ?? 126.94062742683245,
     );
     const map = new kakao.maps.Map(mapEl, {
       center: position,
@@ -88,7 +111,7 @@ const KakaoMap = ({width, height, center, zoom, marker, markerImage}) => {
     }
 
     // 마커 출력 D
-  }, [mapRef, center, zoom, marker, markerImage]);
+  }, [mapRef, _center, zoom, marker, markerImage, currentLocation]); // 센터가 바뀔 때 다시 로딩
 
   return <MapArea ref={mapRef} width={width} height={height} />;
 };

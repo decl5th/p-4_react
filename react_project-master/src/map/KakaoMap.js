@@ -1,7 +1,12 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useCallback, useRef } from 'react';
+import styled, {css} from 'styled-components';
 
-const MapContainer = () => {
+const MapArea = styled.div`
+
+`;
+
+const KakaoMap = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -20,4 +25,4 @@ const MapContainer = () => {
   return <div ref={mapRef}></div>;
 };
 
-export default React.memo(MapContainer);
+export default React.memo(KakaoMap);

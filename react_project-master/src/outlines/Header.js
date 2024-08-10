@@ -11,6 +11,7 @@ import fontSize from '../styles/fontSize';
 import { color } from '../styles/color';
 import logo from '../images/logo.png';
 import MainMenu from './MainMenu';
+import CurrentAddress from '../kakaoapi/CurrentAddress';
 import UserInfoContext from '../member/modules/UserInfoContext';
 import { SmallButton } from '../commons/components/Buttons';
 
@@ -90,6 +91,7 @@ const Header = () => {
     <HeaderBox>
       <section className="site-top">
         <div className="layout-width">
+          <CurrentAddress />
           {isLogin ? (
             <>
               {/* 로그인 상태 */}
